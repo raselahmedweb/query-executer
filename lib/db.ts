@@ -20,7 +20,7 @@ export async function testConnection(connectionString: string) {
   }
 }
 
-export async function query(text: string, params: any[] = []) {
+export async function query(text: string, params: string[] = []) {
   if (!pool) {
     return { success: false, error: 'Database connection not initialized' };
   }

@@ -1,29 +1,6 @@
 "use client";
+export default function PracticeTasks() {
 
-import { query } from "@/lib/db";
-import { QueryResponse } from "../types/query";
-
-interface PracticeTasksProps {
-  connectionString: string;
-}
-
-export default function PracticeTasks({
-  connectionString,
-}: PracticeTasksProps) {
-  const setupDummyData = async () => {
-    const queries = [
-      `CREATE TABLE IF NOT EXISTS students (id SERIAL PRIMARY KEY, name VARCHAR(100), grade INT);`,
-      `INSERT INTO students (name, grade) VALUES ('Alice', 85), ('Bob', 90), ('Charlie', 78);`,
-    ];
-    for (const query of queries) {
-      await fetch("/api/query", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sql: query, connectionString }),
-      });
-    }
-    alert("Dummy data created successfully!");
-  };
   const dummyQueries = [
     {
       id: 1,
