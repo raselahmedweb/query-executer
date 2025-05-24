@@ -7,10 +7,10 @@ interface ConnectionFormProps {
 }
 
 export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
-  const [server, setServer] = useState('localhost'); // Replace with your remote host
-  const [database, setDatabase] = useState('postgres');
+  const [server, setServer] = useState(''); // Replace with your remote host
+  const [database, setDatabase] = useState('');
   const [port, setPort] = useState('5432'); // Use 5432 for remote database
-  const [username, setUsername] = useState('postgres');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [connectionResult, setConnectionResult] = useState<{ success: boolean; message?: string; error?: string } | null>(null);
 

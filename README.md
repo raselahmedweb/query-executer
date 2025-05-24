@@ -3,6 +3,7 @@
 First, run the development server:
 
 ```bash
+git clone https://github.com/raselahmedweb/query-executer.git
 npm install
 npm run dev
 ```
