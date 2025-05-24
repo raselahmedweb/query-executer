@@ -41,7 +41,7 @@ export default function QueryForm({ onQueryResult, connectionString }: QueryForm
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Tab' && suggestions.length > 0) {
+    if (e.key === 'Tab' || e.key === 'Enter' && suggestions.length > 0) {
       e.preventDefault();
       const lastWord = sql.split(/\s+/).pop() || '';
       const suggestion = suggestions[0];
@@ -60,7 +60,6 @@ export default function QueryForm({ onQueryResult, connectionString }: QueryForm
       });
       const result = await response.json();
       onQueryResult(result);
-      setSql('');
       setSuggestions([]);
     } catch (error) {
       onQueryResult({ success: false, error: error instanceof Error ? error.message : 'Failed to execute query' });
@@ -75,7 +74,7 @@ export default function QueryForm({ onQueryResult, connectionString }: QueryForm
         onKeyDown={handleKeyDown}
         highlight={code => highlight(code, languages.sql, 'sql')}
         padding={10}
-        className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-black dark:text-white font-mono"
+        className="w-full p-2 rounded outline-none text-black dark:text-white font-mono"
         placeholder="Enter your SQL query"
       />
       {suggestions.length > 0 && (
@@ -92,9 +91,9 @@ export default function QueryForm({ onQueryResult, connectionString }: QueryForm
           ))}
         </div>
       )}
-      <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      {sql && <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
         Execute Query
-      </button>
+      </button>}
     </form>
   );
 }

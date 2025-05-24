@@ -7,9 +7,9 @@ interface ConnectionFormProps {
 }
 
 export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
-  const [server, setServer] = useState('localhost');
+  const [server, setServer] = useState('localhost'); // Replace with your remote host
   const [database, setDatabase] = useState('postgres');
-  const [port, setPort] = useState('5432');
+  const [port, setPort] = useState('5432'); // Use 5432 for remote database
   const [username, setUsername] = useState('postgres');
   const [password, setPassword] = useState('');
   const [connectionResult, setConnectionResult] = useState<{ success: boolean; message?: string; error?: string } | null>(null);
@@ -17,7 +17,8 @@ export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setConnectionResult(null);
-    const connectionString = `postgres://${username}:${password}@${server}:${port}/${database}`;
+    // Add sslmode=require for remote connections
+    const connectionString = `postgres://${username}:${password}@${server}:${port}/${database}?${server === 'localhost' ? "":"sslmode=require"}`;
     try {
       const response = await fetch('/api/query/connection', {
         method: 'POST',
@@ -25,11 +26,9 @@ export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
         body: JSON.stringify(connectionString),
       });
 
-      // Log the raw response for debugging
       const text = await response.text();
       console.log('Raw response:', text);
 
-      // Parse the response as JSON
       let result;
       try {
         result = JSON.parse(text);
@@ -41,7 +40,6 @@ export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
       if (result.success) {
         localStorage.setItem('dbConnection', connectionString);
         onConnect(connectionString);
-        setConnectionResult(result);
         window.location.reload();
       }
     } catch (error) {
@@ -60,7 +58,7 @@ export default function ConnectionForm({ onConnect }: ConnectionFormProps) {
           onChange={(e) => setServer(e.target.value)}
           placeholder="Server"
           className="p-2 outline-none rounded bg-white dark:bg-black text-black dark:text-white"
-          defaultValue="localhost"
+          defaultValue="remote-host"
         />
         <input
           type="text"
