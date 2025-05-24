@@ -31,7 +31,7 @@ export default function QueryResult({ result }: QueryResultProps) {
               <tr key={index}>
                 {Object.values(row).map((value, i) => (
                   <td key={i} className="border border-gray-300 dark:border-gray-600 p-2">
-                    {value !== null ? value.toString() : 'NULL'}
+                    {value === null || value === undefined ? 'NULL' : value.toString()}
                   </td>
                 ))}
               </tr>
